@@ -5,7 +5,7 @@ data object Day1: Solution() {
     private val input by lazy { File(javaClass.getResource("1")?.toURI() ?: error("Missing input!")).readLines() }
 
     override fun solve(): Pair<Int, Int> {
-        val (first, second) = input.map { ln -> ln.split("   ").let { (a, b) -> a.toInt() to b.toInt() } }.unzip()
+        val (first, second) = input.map { it.split("   ").let { (a, b) -> a.toInt() to b.toInt() } }.unzip()
 
         val partOne = first.sorted().zip(second.sorted()).sumOf { abs(it.first - it.second) }
         val partTwo = first.sumOf { n -> second.count { it == n } * n }
