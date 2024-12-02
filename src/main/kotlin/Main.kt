@@ -1,7 +1,7 @@
 fun main() {
-    val day = 1
+    val day = 2
 
-    val solution = Day1.solve()
+    val solution = Day2.solve()
 
     val title = "Day $day"
     val partOne = "part one: ${solution.first}"
