@@ -21,25 +21,23 @@ data object Day1: Solution() {
     // Part 1: 00:04:43
     // Part 2: 00:07:30
 
-    /*
-        override fun solve(): Pair<Int, Int> {
-            var one = input.map {
-                it.split("   ").first()
-            }
-
-            var two = input.map {
-                it.split("   ").last()
-            }
-
-            one = one.sortedDescending()
-            two = two.sortedDescending()
-
-            val f = one.zip(two)
-
-            val partOne = f.sumOf { abs(it.first.toInt() - it.second.toInt()) }
-            val partTwo = f.sumOf { two.count { etu -> etu == it.first } * it.first.toInt() }
-
-            return Pair(partOne, partTwo)
+    fun originalPartOne(): Pair<Int, Int> {
+        var one = input.map {
+            it.split("   ").first()
         }
-    */
+
+        var two = input.map {
+            it.split("   ").last()
+        }
+
+        one = one.sortedDescending()
+        two = two.sortedDescending()
+
+        val f = one.zip(two)
+
+        val partOne = f.sumOf { abs(it.first.toInt() - it.second.toInt()) }
+        val partTwo = f.sumOf { two.count { etu -> etu == it.first } * it.first.toInt() }
+
+        return Pair(partOne, partTwo)
+    }
 }
