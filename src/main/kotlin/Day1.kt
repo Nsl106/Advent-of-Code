@@ -18,8 +18,8 @@ data object Day1: Solution() {
 
 
     // Original speedrun solution
-    // Part 1: 00:4:43
-    // Part 2: 00:7:30
+    // Part 1: 00:04:43
+    // Part 2: 00:07:30
 
     /*
         override fun solve(): Pair<Int, Int> {
