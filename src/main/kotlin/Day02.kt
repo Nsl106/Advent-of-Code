@@ -47,7 +47,7 @@ private fun main() {
 // Part 2: 01:21:55
 
 // Just part one
-fun originalPartOne() {
+private fun originalPartOne() {
     val input = Util.loadInputLines(2024, 2).map {
         it.split(" ").map { it.toInt() }
     }
@@ -61,7 +61,7 @@ fun originalPartOne() {
 }
 
 // Both parts
-fun originalPartTwo() {
+private fun originalPartTwo() {
     var partOne = 0
     var partTwo = 0
 
