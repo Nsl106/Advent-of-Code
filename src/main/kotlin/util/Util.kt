@@ -1,44 +1,30 @@
 package util
 
 import java.io.File
-import kotlin.math.abs
+import java.security.MessageDigest
 
 object Util {
-    fun <T> List<T>.getRange(start: Int, end: Int): List<T> {
-        val list = mutableListOf<T?>()
-        (start..end).forEach { list.add(this.getOrNull(it)) }
-        return list.filterNotNull()
-    }
 
-    fun String.firstInt() = substring(indexOfFirst { it.isDigit() }).takeWhile { it.isDigit() }.toInt()
-    fun String.firstWord() = substring(indexOfFirst { it.isLetter() }).takeWhile { it.isLetter() }
+    /** Returns the first int present in the string. Determined by [Char.isDigit]. */
+    fun String.firstInt() = dropWhile { !it.isDigit() }.takeWhile { it.isDigit() }.toInt()
+
+    /** Returns the last int present in the string. Determined by [Char.isDigit]. */
+    fun String.lastInt() = dropLastWhile { !it.isDigit() }.takeLastWhile { it.isDigit() }.toInt()
+
+    /** Returns the first word present in the string. Determined by [Char.isLetter]. */
+    fun String.firstWord() = dropWhile { !it.isLetter() }.takeWhile { it.isLetter() }
+
+    /** Returns the last word present in the string. Determined by [Char.isLetter]. */
+    fun String.lastWord() = dropLastWhile { !it.isLetter() }.takeLastWhile { it.isLetter() }
 
     fun Int.squared() = this * this
     fun Long.squared() = this * this
 
+    /** Returns and removes the first element from the list. */
     fun <T> MutableList<T>.pop() = first().also { removeFirst() }
 
-    fun <T> List<T>.split(predicate: (T) -> Boolean): List<List<T>> {
-        var currentOffset = 0
-
-        var nextIndex = indexOfFirst(predicate)
-        if (nextIndex == -1) return listOf(this)
-
-        val result = mutableListOf<List<T>>()
-        do {
-            if (currentOffset != nextIndex)
-                result.add(subList(currentOffset, nextIndex))
-            currentOffset = nextIndex + 1
-
-            val relativeIndex = drop(currentOffset).indexOfFirst(predicate)
-            nextIndex = currentOffset + relativeIndex
-        } while (relativeIndex != -1)
-
-        result.add(drop(currentOffset))
-        return result
-    }
-
-    fun <T> List<List<T>>.toCols(): List<List<T>> {
+    /** Flips the axis of this list. For example a list of [[1, 2], [3, 4]] would be turned into [[1, 3], [2, 4]] */
+    fun <T> List<List<T>>.flipAxis(): List<List<T>> {
         val rowCount = this.size
         val colCount = this[0].size
         val rows = this
@@ -54,31 +40,30 @@ object Util {
         return cols
     }
 
-    fun polygonArea(points: List<LongPoint>): Long {
-        var area = 0L
-        var previousIndex = points.size - 1
-        for (index in points.indices) {
-            val current = points[index]
-            val previous = points[previousIndex]
-            area += (previous.col + current.col) * (previous.row - current.row)
-            previousIndex = index
-        }
-        return abs(area / 2)
+
+    /** Returns the greatest common denominator of two numbers. */
+    fun gcd(a: Int, b: Int): Int {
+        return if (b == 0) a
+        else gcd(b, a % b)
     }
 
-    fun gcd(a: Long, b: Long): Long {
-        var a = a
-        var b = b
-        while (b > 0) {
-            val temp = b
-            b = a % b
-            a = temp
-        }
-        return a
+    /** Returns the greatest common denominator of many numbers. */
+    fun gcd(vararg values: Int): Int {
+        assert(values.isNotEmpty())
+        if (values.size == 1) return values[0]
+        return values.fold(values[0]) { acc, v -> gcd(acc, v) }
     }
 
-    fun lcm(a: Long, b: Long): Long {
+    /** Returns the lowest common multiple of two numbers. */
+    fun lcm(a: Int, b: Int): Int {
         return a * (b / gcd(a, b))
+    }
+
+    /** Returns the lowest common multiple of many numbers. */
+    fun lcm(vararg values: Int): Int {
+        assert(values.isNotEmpty())
+        if (values.size == 1) return values[0]
+        return values.fold(values[0]) { acc, v -> lcm(acc, v) }
     }
 
     fun Int.isEven() = this % 2 == 0
@@ -87,7 +72,31 @@ object Util {
     fun Long.isEven() = this % 2 == 0L
     fun Long.isOdd() = this % 2 != 0L
 
-    data class Coordinate(val x: Int, val y: Int)
+    /** Returns the MD5 hash of a string. */
+    @OptIn(ExperimentalStdlibApi::class) fun String.md5(): String {
+        val md = MessageDigest.getInstance("MD5")
+        val digest = md.digest(this.toByteArray())
+        return digest.toHexString()
+    }
+
+    /** Steps in cardinal directions that may be taken from a given position in a 2d grid. */
+    val gridDirectionsCardinal = setOf(1 to 0, -1 to 0, 0 to 1, 0 to -1)
+    /** Diagonal steps that may be taken from a given position in a 2d grid. */
+    val gridDirectionsDiagonal = setOf(1 to 1, 1 to -1, -1 to 1, -1 to -1)
+    /** Steps that may be taken from a given position in a 2d grid including cardinal directions and diagonals. */
+    val gridDirectionsCardinalAndDiagonal = gridDirectionsCardinal + gridDirectionsDiagonal
+
+    /** Multiplies each number in this pair by [other]*/
+    fun Pair<Int, Int>.times(other: Int) = first * other to second * other
+
+    /** Returns the position in this grid. Equivalent to `list[position.first][position.second]`*/
+    operator fun <T> List<List<T>>.get(position: Pair<Int, Int>) = this[position.first][position.second]
+    /** Returns the position in this grid. Equivalent to `list[a][b]` */
+    operator fun <T> List<List<T>>.get(a: Int, b: Int) = this[a][b]
+    /** Returns the position in this grid or null if out of bounds. Equivalent to `list.getOrNull(a)?.getOrNull(b)` */
+    fun <T> List<List<T>>.getOrNull(a: Int, b: Int) = this.getOrNull(a)?.getOrNull(b)
+    /** Returns the position in this grid or null if out of bounds. Equivalent to `list.getOrNull(position.first)?.getOrNull(position.second)` */
+    fun <T> List<List<T>>.getOrNull(position: Pair<Int, Int>) = this.getOrNull(position.first)?.getOrNull(position.second)
 
     fun printSolution(day: Int, partOne: Int? = null, partTwo: Int? = null) {
         val title = "Day $day"
@@ -108,5 +117,6 @@ object Util {
         println("+" + "-".repeat(header.length - 2) + "+")
     }
 
-    fun loadInputLines(year: Int, day: Int) = File(javaClass.getResource("/$year/$day")?.toURI() ?: error("Missing input for $year/$day!")).readLines()
+    /** Loads the puzzle input from a resource file with the integer name of the day. Returns a `List<String>` representing each line. */
+    fun loadInputLines(year: Int, day: Int) = File(javaClass.getResource("/$year/$day")?.toURI() ?: error("Missing input for $year/$day!")).readLines().dropLastWhile { it.isBlank() }
 }
