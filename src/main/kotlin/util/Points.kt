@@ -1,5 +1,6 @@
 package util
 
+import kotlin.math.E
 import kotlin.math.abs
 
 abstract class BasePosition(open val row: Int, open val col: Int) {
@@ -72,5 +73,12 @@ enum class Direction {
         EAST -> NORTH
         SOUTH -> EAST
         WEST -> SOUTH
+    }
+
+    fun opposite() = when (this) {
+        NORTH -> SOUTH
+        EAST -> WEST
+        SOUTH -> NORTH
+        WEST -> EAST
     }
 }
