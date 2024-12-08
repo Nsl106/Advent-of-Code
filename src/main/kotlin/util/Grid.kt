@@ -50,6 +50,8 @@ class Grid<T> {
 
         fun move(direction: Direction) = reference.getOrNull(position.move(direction))
     }
+
+    override fun toString() = rows.joinToString("\n") { it.values.map(GridIndex<T>::value).joinToString("") }
 }
 
 fun <T> gridOf(lists: List<List<T>>): Grid<T> {
