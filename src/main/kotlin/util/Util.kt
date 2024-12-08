@@ -81,8 +81,10 @@ object Util {
 
     /** Steps in cardinal directions that may be taken from a given position in a 2d grid. */
     val gridDirectionsCardinal = setOf(1 to 0, -1 to 0, 0 to 1, 0 to -1)
+
     /** Diagonal steps that may be taken from a given position in a 2d grid. */
     val gridDirectionsDiagonal = setOf(1 to 1, 1 to -1, -1 to 1, -1 to -1)
+
     /** Steps that may be taken from a given position in a 2d grid including cardinal directions and diagonals. */
     val gridDirectionsCardinalAndDiagonal = gridDirectionsCardinal + gridDirectionsDiagonal
 
@@ -91,12 +93,31 @@ object Util {
 
     /** Returns the position in this grid. Equivalent to `list[position.first][position.second]`*/
     operator fun <T> List<List<T>>.get(position: Pair<Int, Int>) = this[position.first][position.second]
+
     /** Returns the position in this grid. Equivalent to `list[a][b]` */
     operator fun <T> List<List<T>>.get(a: Int, b: Int) = this[a][b]
+
     /** Returns the position in this grid or null if out of bounds. Equivalent to `list.getOrNull(a)?.getOrNull(b)` */
     fun <T> List<List<T>>.getOrNull(a: Int, b: Int) = this.getOrNull(a)?.getOrNull(b)
+
     /** Returns the position in this grid or null if out of bounds. Equivalent to `list.getOrNull(position.first)?.getOrNull(position.second)` */
     fun <T> List<List<T>>.getOrNull(position: Pair<Int, Int>) = this.getOrNull(position.first)?.getOrNull(position.second)
+
+    /** Returns all possible pairings of two items from the elements in this list. */
+    fun <T> List<T>.allPossiblePairs(): List<Pair<T, T>> {
+        val allPairs = mutableListOf<Pair<T, T>>()
+
+        val currentList = this.toMutableList()
+        while (currentList.isNotEmpty()) {
+            val firstItem = currentList.pop()
+
+            for (otherItem in currentList) {
+                allPairs.add(firstItem to otherItem)
+            }
+        }
+
+        return allPairs
+    }
 
     fun printSolution(day: Int, partOne: Any? = null, partTwo: Any? = null) {
         val title = "Day $day"
