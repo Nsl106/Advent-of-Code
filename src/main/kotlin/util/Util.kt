@@ -98,7 +98,7 @@ object Util {
     /** Returns the position in this grid or null if out of bounds. Equivalent to `list.getOrNull(position.first)?.getOrNull(position.second)` */
     fun <T> List<List<T>>.getOrNull(position: Pair<Int, Int>) = this.getOrNull(position.first)?.getOrNull(position.second)
 
-    fun printSolution(day: Int, partOne: Int? = null, partTwo: Int? = null) {
+    fun printSolution(day: Int, partOne: Any? = null, partTwo: Any? = null) {
         val title = "Day $day"
         val partOneText = "part one: $partOne"
         val partTwoText = "part two: $partTwo"
