@@ -22,9 +22,7 @@ private fun main() {
     for (frequency in antennaPositions.keys) {
         // Start by getting all possible pairs of antennas, this is how we will calculate the antinodes
         val positions = antennaPositions[frequency]!!
-        for (pair in positions.allPossiblePairs()) {
-            val (a, b) = pair
-
+        for (a in positions) for (b in positions - a) {
             // Take the difference between the two positions
             val difference = Position(a.row - b.row, a.col - b.col)
 
