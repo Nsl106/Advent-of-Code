@@ -49,6 +49,8 @@ class Grid<T> {
         val west get() = reference.getOrNull(position.move(Direction.WEST))
 
         fun move(direction: Direction) = reference.getOrNull(position.move(direction))
+
+        override fun toString() = position.toString() + " " + value.toString()
     }
 
     override fun toString() = rows.joinToString("\n") { it.values.map(GridIndex<T>::value).joinToString("") }

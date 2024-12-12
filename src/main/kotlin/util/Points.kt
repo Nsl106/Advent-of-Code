@@ -1,6 +1,5 @@
 package util
 
-import kotlin.math.E
 import kotlin.math.abs
 
 abstract class BasePosition(open val row: Int, open val col: Int) {
@@ -28,6 +27,8 @@ data class Position(override val row: Int, override val col: Int): BasePosition(
         Direction.SOUTH -> Position(row + steps, col)
         Direction.WEST -> Position(row, col - steps)
     }
+
+    override fun toString() = "[$row,$col]"
 }
 
 data class LongPoint(val row: Long, val col: Long) {
