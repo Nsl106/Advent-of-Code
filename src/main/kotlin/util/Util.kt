@@ -11,6 +11,12 @@ object Util {
     /** Returns the last int present in the string. Determined by [Char.isDigit]. */
     fun String.lastInt() = dropLastWhile { !it.isDigit() }.takeLastWhile { it.isDigit() }.toInt()
 
+    /** Returns the first long present in the string. Determined by [Char.isDigit]. */
+    fun String.firstLong() = dropWhile { !it.isDigit() }.takeWhile { it.isDigit() }.toLong()
+
+    /** Returns the last long present in the string. Determined by [Char.isDigit]. */
+    fun String.lastLong() = dropLastWhile { !it.isDigit() }.takeLastWhile { it.isDigit() }.toLong()
+
     /** Returns the first word present in the string. Determined by [Char.isLetter]. */
     fun String.firstWord() = dropWhile { !it.isLetter() }.takeWhile { it.isLetter() }
 
