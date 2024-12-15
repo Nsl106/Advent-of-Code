@@ -3,7 +3,7 @@ import util.Util
 import kotlin.math.abs
 
 private fun main() {
-    val input = Util.loadInputLines(2024, 13)
+    val input = Util.loadInputLines(2024, 14)
         .map { ln ->
             ln
                 .split(" ") // Split between velocity and position
@@ -48,7 +48,7 @@ private fun main() {
     val p1 = q1 * q2 * q3 * q4
 
     // Print the part one solution
-    Util.printSolution(13, p1, "Indeterminate")
+    Util.printSolution(14, p1, "Indeterminate")
 
     // Part two prints any pictures with less than 5 overlapping robots (theoretically if they're making a picture less of them will overlap)
     val shouldRunPartTwo = false
